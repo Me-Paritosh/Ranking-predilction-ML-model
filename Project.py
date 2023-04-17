@@ -8,9 +8,7 @@ import sklearn.tree as tr
 import sklearn.ensemble as es
 import sklearn.metrics as m
 import sklearn.linear_model as lm
-import sklearn.neural_network as nn
 import numpy as np
-#import random as rnd
 import warnings as w
 w.filterwarnings('ignore')
 data = pd.read_csv("C:\\Paritosh_Data\\Academic_Classes\\Sem-6\\AI\\StudentPerformancePrediction-ML-main\\StudentPerformancePrediction-ML-main\\AI-Data.csv")
@@ -23,6 +21,8 @@ while(ch != 10):
         t.sleep(1)
         print("\tMarks Class Count Graph")
         axes = sb.countplot(x='Class', data=data, order=['L', 'M', 'H'])
+        for label in axes.containers:
+            axes.bar_label(label)
         plt.show()
     elif (ch == 2):
         print("Loading Graph....\n")
@@ -30,6 +30,8 @@ while(ch != 10):
         print("\tMarks Class Semester-wise Graph")
         fig, axesarr = plt.subplots(1, figsize=(10, 6))
         sb.countplot(x='Semester', hue='Class', data=data, hue_order=['L', 'M', 'H'], axes=axesarr)
+        for label in axesarr.containers:
+            axesarr.bar_label(label)
         plt.show()
     elif (ch == 3):
         print("Loading Graph..\n")
@@ -37,13 +39,17 @@ while(ch != 10):
         print("\tMarks Class Gender-wise Graph")
         fig, axesarr = plt.subplots(1, figsize=(10, 6))
         sb.countplot(x='gender', hue='Class', data=data, order=['M', 'F'], hue_order=['L', 'M', 'H'], axes=axesarr)
+        for label in axesarr.containers:
+            axesarr.bar_label(label)
         plt.show()
     elif (ch == 4):
         print("Loading Graph..\n")
         t.sleep(1)
         print("\tMarks Class Nationality-wise Graph")
         fig, axesarr = plt.subplots(1, figsize=(10, 6))
-        sb.countplot(x='NationalITy', hue='Class', data=data, hue_order=['L', 'M', 'H'], axes=axesarr)
+        sb.countplot(x='Nationality', hue='Class', data=data, hue_order=['L', 'M', 'H'], axes=axesarr)
+        for label in axesarr.containers:
+            axesarr.bar_label(label)
         plt.show()
     elif (ch == 5):
         print("Loading Graph: \n")
@@ -51,6 +57,8 @@ while(ch != 10):
         print("\tMarks Class Grade-wise Graph")
         fig, axesarr = plt.subplots(1, figsize=(10, 6))
         sb.countplot(x='GradeID', hue='Class', data=data, order=['G-02', 'G-04', 'G-05', 'G-06', 'G-07', 'G-08', 'G-09', 'G-10', 'G-11', 'G-12'], hue_order = ['L', 'M', 'H'], axes=axesarr)
+        for label in axesarr.containers:
+            axesarr.bar_label(label)
         plt.show()
     elif (ch ==6):
         print("Loading Graph..\n")
@@ -58,6 +66,8 @@ while(ch != 10):
         print("\tMarks Class Section-wise Graph")
         fig, axesarr = plt.subplots(1, figsize=(10, 6))
         sb.countplot(x='SectionID', hue='Class', data=data, hue_order = ['L', 'M', 'H'], axes=axesarr)
+        for label in axesarr.containers:
+            axesarr.bar_label(label)
         plt.show()
     elif (ch == 7):
         print("Loading Graph..\n")
@@ -65,6 +75,8 @@ while(ch != 10):
         print("\tMarks Class Topic-wise Graph")
         fig, axesarr = plt.subplots(1, figsize=(10, 6))
         sb.countplot(x='Topic', hue='Class', data=data, hue_order = ['L', 'M', 'H'], axes=axesarr)
+        for label in axesarr.containers:
+            axesarr.bar_label(label)
         plt.show()
     elif (ch == 8):
         print("Loading Graph..\n")
@@ -72,6 +84,8 @@ while(ch != 10):
         print("\tMarks Class Stage-wise Graph")
         fig, axesarr = plt.subplots(1, figsize=(10, 6))
         sb.countplot(x='StageID', hue='Class', data=data, hue_order = ['L', 'M', 'H'], axes=axesarr)
+        for label in axesarr.containers:
+            axesarr.bar_label(label)
         plt.show()
     elif (ch == 9):
         print("Loading Graph..\n")
@@ -79,16 +93,17 @@ while(ch != 10):
         print("\tMarks Class Absent Days-wise Graph")
         fig, axesarr = plt.subplots(1, figsize=(10, 6))
         sb.countplot(x='StudentAbsenceDays', hue='Class', data=data, hue_order = ['L', 'M', 'H'], axes=axesarr)
+        for label in axesarr.containers:
+            axesarr.bar_label(label)
         plt.show()
 if(ch == 10):
     print("Exiting..\n")
     t.sleep(1)
-#cor = data.corr()
-#print(cor)
+
 data = data.drop("gender", axis=1)
 data = data.drop("StageID", axis=1)
 data = data.drop("GradeID", axis=1)
-data = data.drop("NationalITy", axis=1)
+data = data.drop("Nationality", axis=1)
 data = data.drop("PlaceofBirth", axis=1)
 data = data.drop("SectionID", axis=1)
 data = data.drop("Topic", axis=1)
@@ -96,7 +111,6 @@ data = data.drop("Semester", axis=1)
 data = data.drop("Relation", axis=1)
 data = data.drop("ParentschoolSatisfaction", axis=1)
 data = data.drop("ParentAnsweringSurvey", axis=1)
-#data = data.drop("VisITedResources", axis=1)
 data = data.drop("AnnouncementsView", axis=1)
 u.shuffle(data)
 countD = 0
@@ -122,7 +136,7 @@ for column in data.columns:
     if data[column].dtype == type(object):
         le = pp.LabelEncoder()
         data[column] = le.fit_transform(data[column])
-ind = int(len(data) * 0.70)
+ind = int(len(data) * 0.80)
 feats = data.values[:, 0:4]
 lbls = data.values[:,4]
 feats_Train = feats[0:ind]
@@ -136,6 +150,13 @@ for a,b in zip(lbls_Test, lbls_predD):
     if(a==b):
         countD += 1
 accD = (countD/len(lbls_Test))
+
+confusion_matrix=m.confusion_matrix(lbls_Test, lbls_predD)
+cm_display = m.ConfusionMatrixDisplay(confusion_matrix = confusion_matrix, display_labels = ['L', 'M','H'])
+
+cm_display.plot()
+plt.show()
+
 print("\nAccuracy measures using Decision Tree:")
 print(m.classification_report(lbls_Test, lbls_predD),"\n")
 print("\nAccuracy using Decision Tree: ", str(round(accD, 3)))
@@ -147,7 +168,6 @@ for a,b in zip(lbls_Test, lbls_predR):
     if(a==b):
         countR += 1
 print("\nAccuracy Measures for Random Forest Classifier: \n")
-#print("\nConfusion Matrix: \n", m.confusion_matrix(lbls_Test, lbls_predR))
 print("\n", m.classification_report(lbls_Test,lbls_predR))
 accR = countR/len(lbls_Test)
 print("\nAccuracy using Random Forest: ", str(round(accR, 3)))
@@ -159,33 +179,7 @@ for a,b in zip(lbls_Test, lbls_predP):
     if a == b:
         countP += 1
 accP = countP/len(lbls_Test)
-print("\nAccuracy measures using Linear Model Perceptron:")
-print(m.classification_report(lbls_Test, lbls_predP),"\n") 
-print("\nAccuracy using Linear Model Perceptron: ", str(round(accP, 3)), "\n")
-t.sleep(1)
-modelL = lm.LogisticRegression()
-modelL.fit(feats_Train, lbls_Train)
-lbls_predL = modelL.predict(feats_Test)
-for a,b in zip(lbls_Test, lbls_predL):
-    if a == b:
-        countL += 1
-accL = countL/len(lbls_Test)
-print("\nAccuracy measures using Linear Model Logistic Regression:")
-print(m.classification_report(lbls_Test, lbls_predL),"\n")
-print("\nAccuracy using Linear Model Logistic Regression: ", str(round(accP, 3)), "\n")
-t.sleep(1)
-modelN = nn.MLPClassifier(activation="logistic")
-modelN.fit(feats_Train, lbls_Train)
-lbls_predN = modelN.predict(feats_Test)
-for a,b in zip(lbls_Test, lbls_predN):
-    #sig.append(1/(1+ np.exp(-b)))
-    if a==b:
-        countN += 1
-#print("\nAverage value of Sigmoid Function: ", str(round(np.average(sig), 3)))
-print("\nAccuracy measures using MLP Classifier:")
-print(m.classification_report(lbls_Test, lbls_predN),"\n")
-accN = countN/len(lbls_Test)
-print("\nAccuracy using Neural Network MLP Classifier: ", str(round(accN, 3)), "\n")
+
 choice = input("Do you want to test specific input (y or n): ")
 if(choice.lower()=="y"):
     gen = input("Enter Gender (M or F): ")
@@ -255,12 +249,9 @@ if(choice.lower()=="y"):
     elif (absc == "Above-7"):
        absc = 0
     arr = np.array([rai, res, dis, absc])
-    #arr = np.array([gen, rnd.randint(0, 30), rnd.randint(0, 30), sta, gra, rnd.randint(0, 30), rnd.randint(0, 30), sem, rel, rai, res, ann, dis, sur, sat, absc])
     predD = modelD.predict(arr.reshape(1, -1))
     predR = modelR.predict(arr.reshape(1, -1))
     predP = modelP.predict(arr.reshape(1, -1))
-    predL = modelL.predict(arr.reshape(1, -1))
-    predN = modelN.predict(arr.reshape(1, -1))
     if (predD == 0):
         predD = "H"
     elif (predD == 1):
@@ -279,30 +270,13 @@ if(choice.lower()=="y"):
         predP = "M"
     elif (predP == 2):
         predP = "L"
-    if (predL == 0):
-        predL = "H"
-    elif (predL == 1):
-        predL = "M"
-    elif (predL == 2):
-        predL = "L"
-    if (predN == 0):
-        predN = "H"
-    elif (predN == 1):
-        predN = "M"
-    elif (predN == 2):
-        predN = "L"
+
     t.sleep(1)
     print("\nUsing Decision Tree Classifier: ", predD)
     t.sleep(1)
     print("Using Random Forest Classifier: ", predR)
     t.sleep(1)
-    print("Using Linear Model Perceptron: ", predP)
-    t.sleep(1)
-    print("Using Linear Model Logisitic Regression: ", predL)
-    t.sleep(1)
-    print("Using Neural Network MLP Classifier: ", predN)
-    print("\nExiting...")
-    t.sleep(1)
+
 else:
     print("Exiting..")
     t.sleep(1)
